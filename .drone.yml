@@ -7,11 +7,11 @@ steps:
   commands:
     - go get gopkg.in/yaml.v2
     - go get github.com/shirou/gopsutil/disk
-    - GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_${GOOS}_${GOARCH}.exe
-    - GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_${GOOS}_${GOARCH}
-    - GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_${GOOS}_${GOARCH}
-    - GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_${GOOS}_${GOARCH}
-    - GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_${GOOS}_${GOARCH}
+    - GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_windows_amd64.exe
+    - GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_linux_amd64
+    - GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_darwin_amd64
+    - GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_darwin_arm64
+    - GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_linux_arm64
 
 - name: github release
   image: plugins/github-release
