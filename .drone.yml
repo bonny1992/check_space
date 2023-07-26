@@ -1,0 +1,30 @@
+kind: pipeline
+name: default
+
+steps:
+- name: build
+  image: golang:1.17
+  commands:
+    - go get gopkg.in/yaml.v2
+    - GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_windows.exe
+    - GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_linux
+    - GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_mac_intel
+    - GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_mac_arm
+    - GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -o ${DRONE_REPO_NAME}_linux_arm64
+
+- name: github release
+  image: plugins/github-release
+  settings:
+    api_key:
+      from_secret: github_token
+    files:
+      - ${DRONE_REPO_NAME}_*
+    checksum:
+      - sha256
+  when:
+    event:
+      - tag
+
+trigger:
+  event:
+    - tag
