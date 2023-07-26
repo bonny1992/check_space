@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"syscall"
 	"gopkg.in/yaml.v2"
+	"github.com/shirou/gopsutil/disk"
 )
 
 type Conf struct {
@@ -62,11 +62,13 @@ func main() {
 	}
 
 	// Get the filesystem information
-	var stat syscall.Statfs_t
-	syscall.Statfs(conf.Path, &stat)
+	diskStat, err := disk.Usage(conf.Path)
+	if err != nil {
+		log.Fatalf("Failed to get disk usage: %v", err)
+	}
 
 	// Calculate the free space in GB
-	free := float64(stat.Bavail*uint64(stat.Bsize)) / 1e9
+	free := float64(diskStat.Free) / (1024 * 1024 * 1024)
 
 	// Exit with status code 0 if the free space is less than the configured value plus the sweet spot, otherwise exit with status code 1
 	if free < conf.Size+conf.SweetSpot {
