@@ -72,8 +72,8 @@ func main() {
 	// Print the available space
 	fmt.Printf("Available space: %.4f GB\n", free)
 
-	// Exit with status code 0 if the free space is less than the configured value plus the sweet spot, otherwise exit with status code 1
-	if free < conf.Size+conf.SweetSpot {
+	// Exit with status code 0 if the free space is more or equal than the configured value plus the sweet spot, otherwise exit with status code 1
+	if free >= conf.Size+conf.SweetSpot {
 		os.Exit(0)
 	} else {
 		os.Exit(1)
