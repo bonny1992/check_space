@@ -69,6 +69,8 @@ func main() {
 
 	// Calculate the free space in GB
 	free := float64(diskStat.Free) / (1024 * 1024 * 1024)
+	// Print the available space
+	fmt.Printf("Available space: %.4f GB\n", free)
 
 	// Exit with status code 0 if the free space is less than the configured value plus the sweet spot, otherwise exit with status code 1
 	if free < conf.Size+conf.SweetSpot {
